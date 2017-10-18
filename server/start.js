@@ -36,10 +36,13 @@ if (module === require.main) {
 
   const PORT = 1337
 
-  const db = require('../db')
+  const db = require('./db')
   db.sync()
   .then(() => {
     console.log('db synced')
     app.listen(PORT, () => console.log(`server listening on port ${PORT}`))
   });
 }
+
+
+
