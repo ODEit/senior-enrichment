@@ -34,9 +34,9 @@ router.put('/:studentId', function(req, res, next){
 router.delete('/:studentId', function(req, res, next){
     const Id = req.params.studentId;
     console.log("HELP : ",Id)
-    // Student.destroy({where : {id: Id}})
-    // .then( () => res.status(204).end())
-    // .catch(next)
+    Student.destroy({where : {id: Id}})
+    .then( () => res.status(204).end())
+    .catch(next)
 })
 
 module.exports = router;

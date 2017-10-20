@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import {NavLink} from 'react-router-dom'
 
-export default class NewStudent extends Component{
+export default class NewCampus extends Component{
     constructor(){
         super()
         this.state = {
@@ -24,7 +25,8 @@ export default class NewStudent extends Component{
     handleSubmit(event){
     event.preventDefault();
     axios.post('/api/campus', this.state)
-    .then(console.log('finished'));
+    .then(res => res.data)
+    .then(campus => this.props.history.push(`/campus/:${campus.id}`))
     }
 
     handleImage(event){
@@ -44,11 +46,12 @@ export default class NewStudent extends Component{
     render(){
         console.log(this.state)
         return(
-            <form onSubmit = {this.handleSubmit} className = 'Campus_Student_table' >
+            <form onSubmit = {this.handleSubmit} className = 'Creator' >
                 <h2>Create Campus</h2>
               <label>name </label><input type = 'text' name = "name" onChange = {this.handleName}></input>
               <label>imageUrl </label><input type = 'url' name = "image" onChange = {this.handleImage}></input>
               <button type = 'submit'>submit</button>
+              <NavLink to = '/campuses' >Back to Home Page link</NavLink>
             </form>
         )
     }

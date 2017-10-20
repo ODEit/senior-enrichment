@@ -23,7 +23,10 @@ export default class Campuses extends Component {
             <div className='Campus'>
                 {this.state.campuses && this.state.campuses.map((campus, index) => {
                     return (
+                        <div className='Campus_image' key= {campus.id}>
+                        <h3>{campus.name}</h3>
                         <NavLink to={`/campus/:${campus.id}`} key={index}><img src={campus.image}></img></NavLink>
+                        </div>
                     )
                 })}
             </div>

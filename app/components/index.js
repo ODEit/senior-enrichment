@@ -7,6 +7,7 @@ import Campus from './Campus'
 import SingleStudent from './SingleStudent'
 import NewStudent from './NewStudent'
 import NewCampus from './NewCampus'
+import Footerbar from './Footerbar'
 
 export default class Main extends Component{
 
@@ -25,7 +26,8 @@ export default class Main extends Component{
             <Route exact path = '/NewStudent' component = {NewStudent} />
             <Route exact path = '/NewCampus' component = {NewCampus} />
             </Switch>
-            </div>
+            <Footerbar/>
+            </div> 
             </Router>
         )
     }

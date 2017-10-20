@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios';
+import {NavLink} from 'react-router-dom'
 
 export default class Campus extends Component {
     constructor() {
@@ -27,7 +28,7 @@ export default class Campus extends Component {
             .then(Student => this.setState({ Student }))
             .then(axios.get('/api/campus')
                 .then(res => res.data)
-                .then(Campuses => this.setState({ Campuses: Campuses })))
+                .then(Campuses => this.setState( { Campuses })))
     }
 
     // {this.state.Student&& this.state.Student.students.sort((a,b) => a.id-b.id).map((student) => {
@@ -57,47 +58,55 @@ export default class Campus extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        console.log(this.state.Student.id)
+        console.log(this.state.Student)
         var updater = {
             name: this.state.name || this.state.Student.name,
             email: this.state.email || this.state.Student.email,
             campusId: this.state.campusId || this.state.Student.campusId
         }
-        axios.put(`/api/student/${this.state.Student.id}`, updater)
+        var Student = Object.assign({},this.state.Student, updater)
+        this.setState({Student})
+            axios.put(`/api/student/${this.state.Student.id}`, updater)
             .then(console.log('finished'))
             .then(() => this.handleChanger())
+            .then(() => this.props.history.push('/'))
+            .then(()=> this.props.history.push(`/student/:${this.state.Student.id}`))
     }
 
-
+    // this.props.history.push('/students')
 
     render() {
-        this.state.Student.campus && console.log(this.state.Student.campus.image)
+        this.state.Student.campus && console.log(this.state.Campuses)
         const student = this.state.Student
         return (
-            <div className='Campus_Student_table'>
+            <div className ='Creator'>
+                {student.campus && <h2>{student.campus.name}</h2>}
                 {student.campus && <div><img src={student.campus.image} /></div>}
-                <table>
+                <table className = 'Student_table'>
                     <tr>
                         <th>Id#</th>
                         <th>Name</th>
                         <th>Campus</th>
+                        <th>Link</th>
                     </tr>
-                    <tr key={student.id} >
+                    <tr>
                         <td>{student.id}</td>
                         <td>{student.name}</td>
                         {student.campus && <td>{student.campus.name}</td>}
+                        {student.campus && <td> <NavLink to={`/campus/:${student.campus.id} `}><img className="Uni" src="http://downloadicons.net/sites/default/files/university-of-small-icons-58871.png " /></NavLink></td>}
                     </tr>
                 </table>
                 <button className="Delete" onClick={this.handleChanger} >Update</button>
                 {this.state.changer && (
-                    <form className="Campus_Student_table " onSubmit={this.handleSubmit}>
-                        <h2>Create Student</h2>
+                    <form className="Creator Student_table" onSubmit={this.handleSubmit}>
+                        <h2>Update Student</h2>
                         <label>name </label><input type='text' name="name" onChange={this.handleName}></input>
                         <label>Email </label><input type='email' name="email" onChange={this.handleEmail}></input>
                         <select onChange={this.handleCampusId} >
                             <option value="">Select a campus</option>
                             {
-                                this.state.Campuses && this.state.Campuses.map(campus => {
+                                this.state.Campuses.length && 
+                                this.state.Campuses.map(campus => {
                                     return <option value={campus.id} key={campus.id}>{campus.name}</option>
                                 })}
                         </select>

@@ -24,9 +24,10 @@ export default class NewStudent extends Component{
     }
 
     handleSubmit(event){
+    var campusid = this.state.campusId
     event.preventDefault();
     axios.post('/api/student', this.state)
-    .then(console.log('finished'));
+    .then(() => this.props.history.push(`/campus/:${campusid}`))
     }
 
     handleEmail(event){
@@ -49,7 +50,7 @@ export default class NewStudent extends Component{
     render(){
         console.log(this.state)
         return(
-            <form className = "Campus_Student_table " onSubmit = {this.handleSubmit}>
+            <form className = "Creator" onSubmit = {this.handleSubmit}>
                 <h2>Create Student</h2>
               <label>name </label><input type = 'text' name = "name" onChange = {this.handleName}></input>
               <label>Email </label><input type = 'email' name = "email" onChange = {this.handleEmail}></input>
